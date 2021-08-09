@@ -1,10 +1,11 @@
-import { Link } from "gatsby"
+import { graphql, Link } from "gatsby"
 import React from "react"
 import Layout from "../components/Layout"
 // https://stackoverflow.com/questions/66869576/gatsby-warn-attempted-import-error-css-does-not-contain-a-default-export-i
 import * as styles from "../styles/home.module.css"
+import Img from "gatsby-image"
 
-export default function Home() {
+export default function Home({ data }) {
   return (
     <Layout>
       <section className={styles.header}>
@@ -16,8 +17,20 @@ export default function Home() {
             My Portfolio Projects
           </Link>
         </div>
-        <img src="/banner.png" alt="site banner" style={{ maxWidth: "100%" }} />
+        <Img fluid={data.file.childImageSharp.fluid} />
       </section>
     </Layout>
   )
 }
+
+export const query = graphql`
+  query Banner {
+    file(relativePath: { eq: "banner.png" }) {
+      childImageSharp {
+        fluid {
+          ...GatsbyImageSharpFluid
+        }
+      }
+    }
+  }
+`
